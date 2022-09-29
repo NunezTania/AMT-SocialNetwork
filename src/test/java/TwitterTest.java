@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestTwitter {
+public class TwitterTest {
     //region private attributes
     private Twitter _twitter;
     //endregion private attributes
 
     @BeforeEach
-    private void beforeEach(){
+    public void beforeEach(){
         _twitter = new Twitter();
     }
 
@@ -72,7 +72,7 @@ public class TestTwitter {
     }
 
     @Test
-    public void subscribe_AddFirstSubscriber_Success() {
+    public void subscribe_AddFirstSubscriber_Success() throws Twitter.SubscriberAlreadyExistsException {
         //given
         //refer to Before Each method
         int expectedAmountOfSubscribers = 15;
@@ -86,7 +86,7 @@ public class TestTwitter {
     }
 
     @Test
-    public void subscribe_AddSubscribersToExistingList_Success(){
+    public void subscribe_AddSubscribersToExistingList_Success() throws Twitter.SubscriberAlreadyExistsException {
         //given
         //refer to Before Each method
         int expectedAmountOfSubscriber = 30;
@@ -102,7 +102,7 @@ public class TestTwitter {
     }
 
     @Test
-    public void subscribe_SubscriberAlreadyExists_ThrowsException(){
+    public void subscribe_SubscriberAlreadyExists_ThrowsException() throws Twitter.SubscriberAlreadyExistsException {
         //given
         //refer to Before Each method
         int expectedAmountOfSubscriber = 15;
@@ -137,7 +137,7 @@ public class TestTwitter {
     }
 
     @Test
-    public void unsubscribe_SubscriberNotFound_ThrowsException(){
+    public void unsubscribe_SubscriberNotFound_ThrowsException() throws Twitter.SubscriberAlreadyExistsException {
         //given
         //refer to Before Each method
         IObserver followerNotFound = new Follower();
