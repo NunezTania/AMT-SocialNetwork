@@ -11,38 +11,58 @@ public class Twitter implements IObservable {
     public Twitter(){}
 
     public Twitter(List<IObserver> observers){
-        throw new UnsupportedOperationException();
+        _observers.addAll(observers);
     }
 
     public List<IObserver> getObservers(){
-        throw new UnsupportedOperationException();
+        return new ArrayList<>(_observers);
     }
 
     public List<String> getTwits(){
-        throw new UnsupportedOperationException();
+        return new ArrayList<>(_twits);
     }
 
     public String lastTwit(){
-        throw new UnsupportedOperationException();
+        return _twits.get(_twits.size() - 1);
     }
 
     public void post(String twit){
-        throw new UnsupportedOperationException();
+        _twits.add(twit);
     }
 
     @Override
-    public void subscribe(List<IObserver> observer) {
-        throw new UnsupportedOperationException();
+    public void subscribe(List<IObserver> observer) throws SubscriberAlreadyExistsException {
+        if (observer != null)
+        {
+            if (observer.size() > 0)
+            {
+                for (IObserver obs : observer)
+                {
+                    if (_observers.contains(obs))
+                        throw new SubscriberAlreadyExistsException();
+                    _observers.add(obs);
+                }
+            }
+        }
     }
 
     @Override
-    public void unsubscribe(IObserver observer) {
-        throw new UnsupportedOperationException();
+    public void unsubscribe(IObserver observer) throws EmptyListOfSubscribersException, SubscriberNotFoundException {
+        if (_observers.size() == 0)
+            throw new EmptyListOfSubscribersException();
+        if (!_observers.contains(observer))
+            throw new SubscriberNotFoundException();
+        _observers.remove(observer);
     }
 
     @Override
-    public void notifyObservers() {
-        throw new UnsupportedOperationException();
+    public void notifyObservers() throws EmptyListOfSubscribersException {
+        if (_observers.isEmpty())
+            throw new EmptyListOfSubscribersException();
+        for (IObserver observer : _observers)
+        {
+            observer.update(this);
+        }
     }
 
     public class TwitterException extends Exception { }
